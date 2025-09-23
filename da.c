@@ -15,7 +15,7 @@ typedef struct {
 	size_t n_items;
 } strVec2;
 
-void intVec2_append_safe(intVec2* vec, int x){
+void intVec2_append_impl(intVec2* vec, int x){
 	
 	if(vec->n_items >= vec->capacity){
 			if(vec->capacity == 0) vec->capacity = 256;
@@ -26,28 +26,36 @@ void intVec2_append_safe(intVec2* vec, int x){
 		vec->items[vec->n_items++] = x;
 }
 
-void intVec2_remove_last(intVec2* vec){
+int intVec2_remove_last(intVec2* vec){
 
-	if(vec->n_items == 0) return;
+	if(vec->n_items == 0) return -1;
 
 	vec->n_items--;
 	
 	int* res = realloc(vec->items, vec->n_items * sizeof(int));
 	if(res || vec->n_items == 0) vec->items = res;
-
+	return 0;
 }
 
 // Remove by value
-void intVec2_rbv(intVec2* vec, int value){
+int intVec2_rbv(intVec2* vec, int value){
 
 	size_t idx = 0;
-	while(vec->items[idx] != value) idx++;
+	while(vec->items[idx] != value){
+		if(idx >= vec->n_items){
+			fprintf(stderr,
+				"Value %i not found in array\n", value);
+			return -1;
+		}
+		idx++;
+	}
 
 	for(size_t i = idx; i < vec->n_items; i++){
 		vec->items[i] = vec->items[i + 1];
 	}
 	
 	vec->n_items--;
+	return 0;
 }
 
 void strVec2_append(strVec2* vec, char* s){
@@ -60,11 +68,11 @@ void strVec2_append(strVec2* vec, char* s){
 		vec->items[vec->n_items++] = s;
 }
 
-void strVec2_remove_last(strVec2* vec){
+int strVec2_remove_last(strVec2* vec){
 
-	if(vec->n_items == 0) return;
+	if(vec->n_items == 0) return -1;
 	vec->items[vec->n_items--] = '\0';
-	
+	return 0;	
 }
 
 void strVec2_rbv(strVec2* vec, const char* value){

@@ -23,21 +23,34 @@ typedef struct {
 			_val);							\
 	    	exit(EXIT_FAILURE); 						\
 	}					    				\
-	intVec2_append_safe((vec), (int)_val); 					\
+	intVec2_append_impl((vec), (int)_val); 					\
 } while(0)
 	
 
 /* ----- integer array stuff ----- */
 
 
-/* Append to the end (int vec) */
-void intVec2_append_safe(intVec2* vec, int x);
+/*
+ * Append to the end (int vec)
+ * Called by #intVec2_append macro
+ * @Params intVec2, value to append
+ */
+void intVec2_append_impl(intVec2* vec, int x);
 
-/* Remove last element (int vec) */
+/*
+ * Remove last element (int vec) 
+ * @Params intVec2
+ * @Return 0 (success) : -1 (array is empty)
+ */
 void intVec2_remove_last(intVec2* vec);
 
-/* Remove element by value (int vec) */
-void intVec2_rbv(intVec2* vec, int value);
+/*
+ * Remove element by value (int vec) 
+ * @Params intVec2, value to remove
+ * @Return 0 (success) : -1 (value not found) 
+ */
+int intVec2_rbv(intVec2* vec, int value);
+
 
 
 /* ----- string array stuff ----- */
@@ -49,8 +62,12 @@ void strVec2_append(strVec2* vec, char* s);
 /* Remove element by value (string vec) */
 void strVec2_rbv(strVec2* vec, const char* value);
 
-/* Remove last element (string vec) */
-void strVec2_remove_last(strVec2* vec);
+/*
+ * Remove last element (string vec) 
+ * @Params strVec2
+ * @Return 0 (success) : -1 (array is empty)
+ */
+int strVec2_remove_last(strVec2* vec);
 
 
 /* ----- more to come soontm -----*/

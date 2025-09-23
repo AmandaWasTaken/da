@@ -33,6 +33,11 @@ int main(int argc, char** argv){
 	intVec2_rbv(&vec, 5);
 	intVec2_rbv(&vec, 2);
 
+	// Example of using return value of intVec2_rbv
+	if(intVec2_rbv(&vec, 69420) != 0){
+		printf("Value 69420 not found\n");
+	}
+
 	// Remove last element from int array
 	intVec2_remove_last(&vec);
 	log_info("Removed items 3 and 5 by value and the last value in array");
