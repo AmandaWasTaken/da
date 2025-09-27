@@ -11,6 +11,6 @@ void da_log_info(const char* __restrict info){
 }
 
 void da_log_error(const char* __restrict err){
-	fprintf(stdout, "%s[INFO]: %s%s\n",
+	fprintf(stdout, "%s[ERROR]: %s%s\n",
 			RED, WHITE, err);
 }
