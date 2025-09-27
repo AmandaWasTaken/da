@@ -1,5 +1,6 @@
 FLAGS=-Wall -Wextra -Wpedantic
 LIB=lib/da.h
+SRC=src/da.c src/da_util.c
 
-example: da.c $(LIB) examples/example.c
-	gcc -o da_example da.c examples/example.c 
+example: $(SRC) $(LIB) examples/example.c
+	gcc -o da_example $(SRC) examples/example.c 

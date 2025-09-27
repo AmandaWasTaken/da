@@ -15,6 +15,8 @@ typedef struct {
 	size_t n_items;
 } strVec2;
 
+#define da_array_size(vec) ((vec).n_items)
+
 // Make sure we don't try to append values outside of the 32bit signed int range
 #define intVec2_append(vec, x) do {		    				\
 	long long _val = (long long)(x);					\
