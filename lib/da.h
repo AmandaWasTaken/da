@@ -15,29 +15,20 @@ typedef struct {
 	size_t n_items;
 } strVec2;
 
-#define da_length(vec) ((vec).n_items)
-
-
 // Make sure we don't try to append values outside of the 32bit signed int range
-#define intVec2_append(vec, x) do {		    	\
-	long long _val = (long long)(x);		\
-	if (_val > INT_MAX || _val < INT_MIN) {		\
-	   fprintf(stderr, "Value out of range: %lld\n",\
-			_val);				\
-	    	exit(EXIT_FAILURE); 			\
-	}					    	\
-	intVec2_append_impl((vec), (int)_val); 		\
+#define intVec2_append(vec, x) do {		    				\
+	long long _val = (long long)(x);					\
+	if (_val > INT_MAX || _val < INT_MIN) {					\
+	   fprintf(stderr, "Value out of range: %lld\n",   			\
+			_val);							\
+	    	exit(EXIT_FAILURE); 						\
+	}					    				\
+	intVec2_append_impl((vec), (int)_val); 					\
 } while(0)
 	
 
 /* ----- integer array stuff ----- */
 
-
-/* 
- * I guess you could just print vec->n_items but whatev
- */
-
-static inline size_t iVec2_size(const intVec2 *vec);
 
 /*
  * Append to the end (int vec)
