@@ -2,18 +2,51 @@
 #include <string.h>
 #include <limits.h>
 #include <stdio.h>
+#include "../lib/da_util.h"
 
 typedef struct {
 	int* items;
 	size_t capacity;
 	size_t n_items;
+	char* item_type;
 } intVec2;
 
 typedef struct {
 	char** items;
 	size_t capacity;
 	size_t n_items;
+	char* item_type;
 } strVec2;
+
+typedef void (*ArrayPrinter)(const void* item);
+
+
+void print_integer(const void* item){
+	printf("%i", *(const int*) item);
+}
+
+void print_string(const void* item){
+	printf("%s", *(const char**) item);
+}
+
+void da_print_vec(const void* vec, size_t n_items, 
+		size_t item_size, ArrayPrinter print_func){
+	
+	const char* curr_item = (const char *)vec;
+	if(n_items == 0){
+		printf("%s%s%s: Array is empty\n",
+				GREEN, __func__, WHITE);
+		return;
+	}
+
+	putchar('[');
+	for(size_t i = 0; i < n_items; i++){
+		print_func(curr_item);
+		if(i < n_items - 1) printf(", ");
+		curr_item += item_size;
+	}
+	printf("]\n");
+} 
 
 void intVec2_append_impl(intVec2* vec, int x){
 	

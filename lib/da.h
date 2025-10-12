@@ -31,11 +31,31 @@ typedef struct {
 
 /* ----- integer array stuff ----- */
 
+typedef void (*writer)(const void* item);
+
+
+void print_integer(const void* item);
+void print_string(const void* item);
+
+/*
+ * Print all elements of a vector
+ * @Param vector (any data type)
+ * @Param number of items in vector \\
+ * Call da_array_size(vec) to get the number of items if unknown
+ * @Param size of individual item (eg. sizeof(int) for an intVec2)
+ * @Param function name that matches the vector data type \\
+ * (eg. print_integer for intVec2, print_string for strVec2
+ * @Return none
+ */
+void da_print_vec(const void* vec, size_t n_items, 
+		size_t item_size, writer writer_func);	
+
 
 /*
  * Append to the end (int vec)
  * Called by #intVec2_append macro
  * @Params intVec2, value to append
+ * @Return none
  */
 void intVec2_append_impl(intVec2* vec, int x);
 
@@ -58,10 +78,14 @@ int intVec2_rbv(intVec2* vec, int value);
 /* ----- string array stuff ----- */
 
 
-/* Append to the end (string vec) */
+/* Append to the end (string vec) 
+ * Same params as intVec2_append_impl()
+ */
 void strVec2_append(strVec2* vec, char* s);
 
-/* Remove element by value (string vec) */
+/* Remove element by value (string vec) *
+ * Same params as intVec2_rbv()
+ */
 void strVec2_rbv(strVec2* vec, const char* value);
 
 /*

@@ -19,10 +19,7 @@ int main(int argc, char** argv){
 	da_log_info("Added values 0..9 to vec");
 	da_log_info("Printing all values of vec");
 
-	for(size_t i = 0; i < vec.n_items; i++){
-		printf("%i, ", vec.items[i]);
-	}
-	printf("\n");
+	da_print_vec(vec.items, vec.n_items, sizeof(int), print_integer);
 
 	// Remove elements from int array by value
 	intVec2_rbv(&vec, 5);
@@ -39,10 +36,7 @@ int main(int argc, char** argv){
 
 	// Print values again to show that the removal worked as expected
 	da_log_info("Printing all values after removing some");
-	for(size_t i = 0; i < vec.n_items; i++){
-		printf("%i, ", vec.items[i]);
-	}
-	printf("\n");
+	da_print_vec(vec.items, vec.n_items, sizeof(int), print_integer);
 
 
 	// Initialize a string array
@@ -56,25 +50,23 @@ int main(int argc, char** argv){
 	da_log_info("Added some values to strvec");
 	da_log_info("Printing all values of strvec");
 
-	for(size_t i = 0; i < strvec.n_items; i++){
-		printf("%s\n", strvec.items[i]);
-	}
+	da_print_vec(strvec.items, strvec.n_items,
+			sizeof(char*), print_string);
 
 	// Remove the last element in string array and print again
 	strVec2_remove_last(&strvec);
 	da_log_info("Removed last element from string array");
 	da_log_info("Printing all values of strvec");
-	for(size_t i = 0; i < strvec.n_items; i++){
-		printf("%s\n", strvec.items[i]);
-	}
+	da_print_vec(strvec.items, strvec.n_items,
+			sizeof(char*), print_string);
 
 	strVec2_rbv(&strvec, "Hello World");
 	strVec2_append(&strvec, "Third string");
 	da_log_info("Removed string \"Hello World\" from strvec\n "
 			"and added \"Third string\"");
 	da_log_info("Printing all values of strvec");
-	for(size_t i = 0; i < strvec.n_items; i++){
-		printf("%s\n", strvec.items[i]);
-	}
+	da_print_vec(strvec.items, strvec.n_items,
+		sizeof(char*), print_string);
+	
         return 0;
 }
