@@ -32,12 +32,12 @@ void print_string(const void* item){
 void da_print_vec(const void* vec, size_t n_items, 
 		size_t item_size, ArrayPrinter print_func){
 	
-	const char* curr_item = (const char *)vec;
 	if(n_items == 0){
-		printf("%s%s%s: Array is empty\n",
-				GREEN, __func__, WHITE);
+		da_log("Array is empty", LOG_ERROR);
 		return;
 	}
+
+	const char* curr_item = (const char *)vec;
 
 	putchar('[');
 	for(size_t i = 0; i < n_items; i++){
@@ -56,7 +56,7 @@ void intVec2_append_impl(intVec2* vec, int x){
 			vec->items = realloc(vec->items, 
 					vec->capacity * sizeof(*vec->items));
 		}
-		vec->items[vec->n_items++] = x;
+	vec->items[vec->n_items++] = x;
 }
 
 int intVec2_remove_last(intVec2* vec){
@@ -76,8 +76,13 @@ int intVec2_rbv(intVec2* vec, int value){
 	size_t idx = 0;
 	while(vec->items[idx] != value){
 		if(idx >= vec->n_items){
-			fprintf(stderr,
+			/*fprintf(stderr,
 				"Value %i not found in array\n", value);
+				*/
+			char* err = malloc(32);
+			sprintf(err, "Value %i not found in array", value);
+			da_log(err, LOG_ERROR);
+			free(err);
 			return -1;
 		}
 		idx++;
