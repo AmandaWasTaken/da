@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include <string.h>
 #include <limits.h>
 #include <stdio.h>
@@ -17,6 +18,41 @@ typedef struct {
 	size_t n_items;
 	char* item_type;
 } strVec2;
+
+static void qs_swap(int* x, int* y){
+
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+static int qs_partition(intVec2* vec, int l, int h){
+
+	int pivot = vec->items[h];
+	int i = l - 1;
+
+	for(int j = l; j <= h - 1; j++){
+		if(vec->items[j] < pivot){
+			i++;
+			qs_swap(&(vec->items[i]), &(vec->items[j]));
+		}
+	}
+
+	qs_swap(&(vec->items[i + 1]), &(vec->items[h]));
+	return i + 1;
+
+}
+
+void quicksort(intVec2* vec, int l, int h){
+
+	if(l >= h) return;
+	
+	int pivot = qs_partition(vec, l, h);
+	quicksort(vec, l, pivot - 1);
+	quicksort(vec, pivot + 1, h);	
+}
+
+
 
 typedef void (*ArrayPrinter)(const void* item);
 
@@ -48,7 +84,7 @@ void da_print_vec(const void* vec, size_t n_items,
 	printf("]\n");
 } 
 
-void intVec2_append_impl(intVec2* vec, int x){
+void intVec2_push_impl(intVec2* vec, int x){
 	
 	if(vec->n_items >= vec->capacity){
 			if(vec->capacity == 0) vec->capacity = 256;
@@ -59,7 +95,7 @@ void intVec2_append_impl(intVec2* vec, int x){
 	vec->items[vec->n_items++] = x;
 }
 
-int intVec2_remove_last(intVec2* vec){
+int intVec2_pop(intVec2* vec){
 
 	if(vec->n_items == 0) return -1;
 
@@ -96,7 +132,7 @@ int intVec2_rbv(intVec2* vec, int value){
 	return 0;
 }
 
-void strVec2_append(strVec2* vec, char* s){
+void strVec2_push(strVec2* vec, char* s){
 	if(vec->n_items >= vec->capacity){
 			if(vec->capacity == 0) vec->capacity = 256;
 			else vec->capacity *= 2;
@@ -106,7 +142,7 @@ void strVec2_append(strVec2* vec, char* s){
 		vec->items[vec->n_items++] = s;
 }
 
-int strVec2_remove_last(strVec2* vec){
+int strVec2_pop(strVec2* vec){
 
 	if(vec->n_items == 0) return -1;
 	vec->items[vec->n_items--] = '\0';

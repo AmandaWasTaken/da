@@ -18,20 +18,22 @@ typedef struct {
 #define da_array_size(vec) ((vec).n_items)
 
 // Make sure we don't try to append values outside of the 32bit signed int range
-#define intVec2_append(vec, x) do {		    				\
+#define intVec2_push(vec, x) do {		    				\
 	long long _val = (long long)(x);					\
 	if (_val > INT_MAX || _val < INT_MIN) {					\
 	   fprintf(stderr, "Value out of range: %lld\n",   			\
 			_val);							\
 	    	exit(EXIT_FAILURE); 						\
 	}					    				\
-	intVec2_append_impl((vec), (int)_val); 					\
+	intVec2_push_impl((vec), (int)_val); 					\
 } while(0)
 	
+void quicksort(intVec2* vec, int l, int h);
+
+typedef void (*writer)(const void* item);
 
 /* ----- integer array stuff ----- */
 
-typedef void (*writer)(const void* item);
 
 
 void print_integer(const void* item);
@@ -57,14 +59,14 @@ void da_print_vec(const void* vec, size_t n_items,
  * @Params intVec2, value to append
  * @Return none
  */
-void intVec2_append_impl(intVec2* vec, int x);
+void intVec2_push_impl(intVec2* vec, int x);
 
 /*
  * Remove last element (int vec) 
  * @Params intVec2
  * @Return 0 (success) : -1 (array is empty)
  */
-void intVec2_remove_last(intVec2* vec);
+void intVec2_pop(intVec2* vec);
 
 /*
  * Remove element by value (int vec) 
@@ -81,7 +83,7 @@ int intVec2_rbv(intVec2* vec, int value);
 /* Append to the end (string vec) 
  * Same params as intVec2_append_impl()
  */
-void strVec2_append(strVec2* vec, char* s);
+void strVec2_push(strVec2* vec, char* s);
 
 /* Remove element by value (string vec) *
  * Same params as intVec2_rbv()
@@ -93,7 +95,7 @@ void strVec2_rbv(strVec2* vec, const char* value);
  * @Params strVec2
  * @Return 0 (success) : -1 (array is empty)
  */
-int strVec2_remove_last(strVec2* vec);
+int strVec2_pop(strVec2* vec);
 
 
 /* ----- more to come soontm -----*/
